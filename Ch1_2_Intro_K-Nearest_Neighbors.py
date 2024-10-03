@@ -12,4 +12,4 @@ print(first_distance)
 new_listings = 3
 dc_listings['distance'] = dc_listings['accommodates'].apply(lambda x: np.abs(x - new_listings))
 print(dc_listings['distance'].value_counts())
-print(dc_listings[dc_listings['distance'] == 0]['accomodates'])
+print(dc_listings[dc_listings['distance'] == 0]['accommodates'])
