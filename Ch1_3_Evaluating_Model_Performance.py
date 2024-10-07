@@ -36,3 +36,13 @@ def predict_price(new_listing):
 test_df['predicted_price'] = test_df['accommodates'].apply(predict_price)
 # Use .loc to avoid SettingWithCopyWarning - didn't work but for the record...
 #test_df.loc[2792: , 'predicted_price'] = test_df['accommodates'].apply(predict_price)
+
+# Error metrics for the predictions - mean absolute error.
+test_df['error'] = np.absolute(test_df['predicted_price'] - test_df['price'])
+mae = test_df['error'].mean()
+print(mae)
+
+# Error metrics for the predictions - mean square error.
+test_df['square error'] = (test_df['predicted_price'] - test_df['price']) ** 2
+mse = test_df['square error'].mean()
+print(mse)
