@@ -2,9 +2,11 @@ import pandas as pd
 import numpy as np
 
 dc_listings = pd.read_csv("dc_airbnb.csv")
+
 stripped_commas = dc_listings['price'].str.replace(',', '')
 stripped_dollars = stripped_commas.str.replace('$', '')
 dc_listings['price'] = stripped_dollars.astype('float')
+
 # split the dataset into 2 partitions - the training set and the test set
 train_df = dc_listings.iloc[0 : 2792]
 #test_df = dc_listings.iloc[2792 : ]
@@ -33,4 +35,4 @@ def predict_price(new_listing):
 
 test_df['predicted_price'] = test_df['accommodates'].apply(predict_price)
 # Use .loc to avoid SettingWithCopyWarning - didn't work but for the record...
-#test_df.loc[:, 'predicted_price'] = test_df['accommodates'].apply(predict_price)
+#test_df.loc[2792: , 'predicted_price'] = test_df['accommodates'].apply(predict_price)
