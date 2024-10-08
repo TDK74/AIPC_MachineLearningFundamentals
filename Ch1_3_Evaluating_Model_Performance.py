@@ -63,3 +63,8 @@ test_df['predicted_price'] = test_df['bathrooms'].apply(lambda x: predict_price(
 test_df['square error'] = (test_df['predicted_price'] - test_df['price']) ** 2
 mse_comp_model = test_df['square error'].mean()
 print(mse_comp_model)
+# Error metrics for the predictions - root mean square error.
+rmse = mse ** (1 / 2)
+rmse_comp_model = mse_comp_model ** (1 / 2)
+print(rmse)
+print(rmse_comp_model)
