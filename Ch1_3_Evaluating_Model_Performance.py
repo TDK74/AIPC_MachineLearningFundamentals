@@ -9,7 +9,7 @@ dc_listings['price'] = stripped_dollars.astype('float')
 
 # split the dataset into 2 partitions - the training set and the test set
 train_df = dc_listings.iloc[0 : 2792]
-#test_df = dc_listings.iloc[2792 : ]
+#test_df = dc_listings.iloc[2792 : ] # didn't work in this way although it was example code
 test_df = dc_listings.iloc[2792 : ].copy()  # Explicitly create a copy
 
 # def predict_price(new_listing):
@@ -46,3 +46,20 @@ print(mae)
 test_df['square error'] = (test_df['predicted_price'] - test_df['price']) ** 2
 mse = test_df['square error'].mean()
 print(mse)
+
+# Training Another Model
+def predict_price(new_listing):
+    temp_df = train_df.copy()
+    temp_df['distance'] = temp_df['bathrooms'].apply(lambda x: np.abs(x - new_listing))
+    temp_df = temp_df.sort_values('distance')
+    nearest_neighbors_prices = temp_df.iloc[0 : 5]['price']
+    predicted_price = nearest_neighbors_prices.mean()
+
+    return predicted_price
+
+
+# Error metrics for the predictions - mean square error.
+test_df['predicted_price'] = test_df['bathrooms'].apply(lambda x: predict_price(x))
+test_df['square error'] = (test_df['predicted_price'] - test_df['price']) ** 2
+mse_comp_model = test_df['square error'].mean()
+print(mse_comp_model)
