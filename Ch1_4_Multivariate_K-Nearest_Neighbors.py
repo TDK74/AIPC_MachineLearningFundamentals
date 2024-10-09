@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from scipy.spatial import distance
+from sklearn.neighbors import KNeighborsRegressor
 
 
 np.random.seed(1)
@@ -46,3 +47,33 @@ first_listing = normalized_listings.iloc[0][['accommodates', 'bathrooms']]
 fifth_listing = normalized_listings.iloc[4][['accommodates', 'bathrooms']]
 first_fifth_distance = distance.euclidean(first_listing, fifth_listing)
 print(first_fifth_distance)
+
+# Introduction to Scikit-learn - Fitting a Model and Making Predictions.
+# Split the full dataser into train and test sets.
+train_df = normalized_listings.iloc[0: 2792]
+test_df = normalized_listings.iloc[2792 : ]
+
+# Matrix-like object, containing just the 2 columns of interest from training set.
+train_features = train_df[['accommodates', 'bathrooms']]
+
+# List-like object, containing just the target column 'price'.
+train_target = train_df['price']
+
+# Pass everything into the fit method.
+knn = KNeighborsRegressor(algorithm='brute')
+knn.fit(train_features, train_target)
+predictions_brute = knn.predict(test_df[['accommodates', 'bathrooms']])
+print(predictions_brute)
+
+# ONE MORE WAY.
+train_columns = ['accommodates', 'bathrooms']
+
+# Instantiate ML model.
+knn = KNeighborsRegressor(n_neighbors=5, algorithm='brute')
+
+# Fit the model to data.
+knn.fit(train_df[train_columns], train_df['price'])
+
+# Use model to make predictions.
+predictions = knn.predict(test_df[train_columns])
+print(predictions)
