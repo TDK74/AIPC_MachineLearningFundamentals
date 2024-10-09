@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.spatial import distance
 
 
 np.random.seed(1)
@@ -32,3 +33,16 @@ normalized_col = first_transform / first_transform.std()
 normalized_listings = (dc_listings - dc_listings.mean() / (dc_listings.std()))
 normalized_listings['price'] = dc_listings['price']
 print(normalized_listings.head(3))
+
+# Euclidean Distance for Multivariate Case
+# a simple example
+first_list = [-0.596544, -0.439151]
+second_list = [-0.596544, 0.412923]
+dist = distance.euclidean(first_list, second_list)
+print(dist)
+
+# actual example
+first_listing = normalized_listings.iloc[0][['accommodates', 'bathrooms']]
+fifth_listing = normalized_listings.iloc[4][['accommodates', 'bathrooms']]
+first_fifth_distance = distance.euclidean(first_listing, fifth_listing)
+print(first_fifth_distance)
