@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 from scipy.spatial import distance
 from sklearn.neighbors import KNeighborsRegressor
-
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import root_mean_squared_error
 
 np.random.seed(1)
 
@@ -63,7 +64,7 @@ train_target = train_df['price']
 knn = KNeighborsRegressor(algorithm='brute')
 knn.fit(train_features, train_target)
 predictions_brute = knn.predict(test_df[['accommodates', 'bathrooms']])
-print(predictions_brute)
+print(len(predictions_brute))
 
 # ONE MORE WAY.
 train_columns = ['accommodates', 'bathrooms']
@@ -76,4 +77,14 @@ knn.fit(train_df[train_columns], train_df['price'])
 
 # Use model to make predictions.
 predictions = knn.predict(test_df[train_columns])
-print(predictions)
+print(len(predictions))
+
+# Calculating MSE and RMSE using Scikit-Learn
+#knn = KNeighborsRegressor(n_neighbors=5, algorithm='brute', metric='euclidean') # same results as w/o metric='euclidean'
+
+two_features_mse = mean_squared_error(test_df['price'], predictions)
+two_features_rmse1 = two_features_mse ** (1 / 2)
+two_features_rmse2 = root_mean_squared_error(test_df['price'], predictions)
+print(two_features_mse)
+print(two_features_rmse1)
+print(two_features_rmse2)
