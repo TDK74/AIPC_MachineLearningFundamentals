@@ -41,13 +41,13 @@ print(normalized_listings.head(3))
 first_list = [-0.596544, -0.439151]
 second_list = [-0.596544, 0.412923]
 dist = distance.euclidean(first_list, second_list)
-print(dist)
+print(f"Euclidean distance: {dist}")
 
 # actual example
 first_listing = normalized_listings.iloc[0][['accommodates', 'bathrooms']]
 fifth_listing = normalized_listings.iloc[4][['accommodates', 'bathrooms']]
 first_fifth_distance = distance.euclidean(first_listing, fifth_listing)
-print(first_fifth_distance)
+print(f"First fifth distance: {first_fifth_distance}")
 
 # Introduction to Scikit-learn - Fitting a Model and Making Predictions.
 # Split the full dataser into train and test sets.
@@ -64,7 +64,7 @@ train_target = train_df['price']
 knn = KNeighborsRegressor(algorithm='brute')
 knn.fit(train_features, train_target)
 predictions_brute = knn.predict(test_df[['accommodates', 'bathrooms']])
-print(len(predictions_brute))
+print(f"Length of predictions 1st time: {len(predictions_brute)}")
 
 # ONE MORE WAY.
 train_columns = ['accommodates', 'bathrooms']
@@ -77,7 +77,7 @@ knn.fit(train_df[train_columns], train_df['price'])
 
 # Use model to make predictions.
 predictions = knn.predict(test_df[train_columns])
-print(len(predictions))
+print(f"Length of predictions 2nd time: {len(predictions)}")
 
 # Calculating MSE and RMSE using Scikit-Learn
 #knn = KNeighborsRegressor(n_neighbors=5, algorithm='brute', metric='euclidean') # same results as w/o metric='euclidean'
@@ -85,6 +85,16 @@ print(len(predictions))
 two_features_mse = mean_squared_error(test_df['price'], predictions)
 two_features_rmse1 = two_features_mse ** (1 / 2)
 two_features_rmse2 = root_mean_squared_error(test_df['price'], predictions)
-print(two_features_mse)
-print(two_features_rmse1)
-print(two_features_rmse2)
+print(f"Two features RMSE: {two_features_mse}")
+print(f"Two features RMSE1: {two_features_rmse1}")
+print(f"Two features RMSE2: {two_features_rmse2}")
+
+# Using More Features - accommodates, bedrooms, bathrooms, number_of_reviews
+features = ['accommodates', 'bedrooms', 'bathrooms', 'number_of_reviews']
+#knn = KNeighborsRegressor(n_neighbors=5, algorithm='brute')
+knn.fit(train_df[features], train_df['price'])
+four_predictions = knn.predict(test_df[features])
+four_mse = mean_squared_error(test_df['price'], four_predictions)
+four_rsme = four_mse ** 0.5
+print(f"Four features MSE: {four_mse}")
+print(f"Four features RMSE: {four_rsme}")
