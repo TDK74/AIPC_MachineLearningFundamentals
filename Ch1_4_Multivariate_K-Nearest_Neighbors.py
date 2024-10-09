@@ -21,3 +21,14 @@ print(dc_listings.isnull().sum())
 dc_listings = dc_listings.drop(['cleaning_fee', 'security_deposit'], axis=1)
 dc_listings = dc_listings.dropna(axis=0)
 print(dc_listings.isnull().sum())
+
+# Normalize Columns
+# Subtract each value in the column by the mean.
+first_transform = dc_listings['maximum_nights'] - dc_listings['maximum_nights'].mean()
+# Divide each value in the column by the standard deviation
+normalized_col = first_transform / first_transform.std()
+# Also possible :
+# normalized_col = first_transform / dc_listings['maximum_nights'].std()
+normalized_listings = (dc_listings - dc_listings.mean() / (dc_listings.std()))
+normalized_listings['price'] = dc_listings['price']
+print(normalized_listings.head(3))
