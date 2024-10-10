@@ -1,6 +1,7 @@
 import pandas as pd
-# import numpy as np
-# from scipy.spatial import distance as dst
+import matplotlib.pyplot as plt
+#import numpy as np
+#from scipy.spatial import distance as dst
 from sklearn.neighbors import KNeighborsRegressor as KNR
 from sklearn.metrics import mean_squared_error as MSE
 # not in the sample code but might be useful
@@ -53,3 +54,10 @@ for hp in hyper_params_20:
 print(f"List of MSE values - k from 1 to 20: {mse_values_20}")
 # not in the sample code but might be useful
 print(f"List of RMSE values - k from 1 to 20: {rmse_values_20}")
+
+# Visualizing Hyperparameter Values with matplotlib.pyplot
+plt.scatter(hyper_params_20, mse_values_20)
+plt.show()
+# not in the sample code but might be useful
+plt.scatter(hyper_params_20, rmse_values_20)
+plt.show()
