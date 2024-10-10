@@ -85,16 +85,27 @@ print(f"Length of predictions 2nd time: {len(predictions)}")
 two_features_mse = mean_squared_error(test_df['price'], predictions)
 two_features_rmse1 = two_features_mse ** (1 / 2)
 two_features_rmse2 = root_mean_squared_error(test_df['price'], predictions)
-print(f"Two features RMSE: {two_features_mse}")
+print(f"Two features MSE: {two_features_mse}")
 print(f"Two features RMSE1: {two_features_rmse1}")
 print(f"Two features RMSE2: {two_features_rmse2}")
 
 # Using More Features - accommodates, bedrooms, bathrooms, number_of_reviews
-features = ['accommodates', 'bedrooms', 'bathrooms', 'number_of_reviews']
+four_features = ['accommodates', 'bedrooms', 'bathrooms', 'number_of_reviews']
 #knn = KNeighborsRegressor(n_neighbors=5, algorithm='brute')
-knn.fit(train_df[features], train_df['price'])
-four_predictions = knn.predict(test_df[features])
+knn.fit(train_df[four_features], train_df['price'])
+four_predictions = knn.predict(test_df[four_features])
 four_mse = mean_squared_error(test_df['price'], four_predictions)
 four_rsme = four_mse ** 0.5
 print(f"Four features MSE: {four_mse}")
 print(f"Four features RMSE: {four_rsme}")
+
+# Using All Features, except for price.
+features = train_df.columns.tolist()
+features.remove('price')
+
+knn.fit(train_df[features], train_df['price'])
+all_features_predictions = knn.predict(test_df[features])
+all_features_mse = mean_squared_error(test_df['price'], all_features_predictions)
+all_features_rmse = all_features_mse ** 0.5
+print(f"All features MSE: {all_features_mse}")
+print(f"All features RMSE: {all_features_rmse}")
