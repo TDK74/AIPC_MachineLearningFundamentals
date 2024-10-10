@@ -50,9 +50,11 @@ first_fifth_distance = distance.euclidean(first_listing, fifth_listing)
 print(f"First fifth distance: {first_fifth_distance}")
 
 # Introduction to Scikit-learn - Fitting a Model and Making Predictions.
-# Split the full dataser into train and test sets.
+# Split the full dataset into train and test sets.
 train_df = normalized_listings.iloc[0: 2792]
 test_df = normalized_listings.iloc[2792 : ]
+train_df.to_csv('dc_airbnb_train.csv', index=False)
+test_df.to_csv('dc_airbnb_test.csv', index=False)
 
 # Matrix-like object, containing just the 2 columns of interest from training set.
 train_features = train_df[['accommodates', 'bathrooms']]
