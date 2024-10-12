@@ -38,3 +38,13 @@ avg_rmse = np.mean([iteration_two_rmse, iteration_one_rmse])
 print(f"Iteration one RMSE: {iteration_one_rmse}")
 print(f"Iteration two RMSE: {iteration_two_rmse}")
 print(f"Average RMSE: {avg_rmse}")
+
+# K-Fold Cross Validation
+dc_listings.loc[dc_listings.index[0 : 745], "fold"] = 1
+dc_listings.loc[dc_listings.index[745 : 1490], "fold"] = 2
+dc_listings.loc[dc_listings.index[1490 : 2234], "fold"] = 3
+dc_listings.loc[dc_listings.index[2234 : 2978], "fold"] = 4
+dc_listings.loc[dc_listings.index[2978 : 3723], "fold"] = 5
+
+print(dc_listings["fold"].value_counts())
+print("\n Num of missing values: ", dc_listings["fold"].isnull().sum())
