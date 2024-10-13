@@ -24,3 +24,19 @@ numeric_cars = cars[continuous_values_columns]
 
 numeric_cars.head()
 
+# Data Cleaning
+numeric_cars = numeric_cars.replace('?', np.nan)
+numeric_cars.head()
+numeric_cars = numeric_cars.astype('float')
+numeric_cars.isnull().sum()
+# `price` is the column to be predicted -> removing any rows with missing `price` values.
+numeric_cars = numeric_cars.dropna(subset=['price'])
+numeric_cars.isnull().sum()
+# Replace missing values in other columns using column means.
+numeric_cars = numeric_cars.fillna(numeric_cars.mean())
+# Confirm that there are no more missing values.
+numeric_cars.isnull().sum()
+# Normalize all columnns to range from 0 to 1 except the target column.
+price_column = numeric_cars['price']
+numeric_cars = (numeric_cars - numeric_cars.min()) / (numeric_cars.max() - numeric_cars.min())
+numeric_cars['price'] = price_column
