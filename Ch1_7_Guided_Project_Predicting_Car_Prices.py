@@ -44,8 +44,52 @@ numeric_cars = (numeric_cars - numeric_cars.min()) / (numeric_cars.max() - numer
 numeric_cars['price'] = price_column
 
 # Univariate Model
-def knn_train_test(train_col, target_col, df):
+# Default value of k hyperparameter
+def knn_train_test_def(train_col, target_col, df):
     knn = KNR()
+    np.random.seed(1)
+
+    # Randomize order of rows in DataFrame.
+    shuffled_index = np.random.permutation(df.index)
+    rand_df = df.reindex(shuffled_index)
+
+    # Divide number of rows in half and round.
+    last_train_row = int(len(rand_df) / 2)
+
+    # Select the first half, and set as training set.
+    # Select the second half, and set as test set.
+    train_df = rand_df.iloc[0 : last_train_row]
+    test_df = rand_df.iloc[last_train_row : ]
+
+    # Fit a KNN model using default k value.
+    knn.fit(train_df[[train_col]], train_df[target_col])
+
+    # Make predictions using model.
+    predicted_labels = knn.predict(test_df[[train_col]])
+
+    # Calculate and return RMSE.
+    mse_def = MSE(test_df[target_col], predicted_labels)
+    rmse_def = np.sqrt(mse_def)
+
+    return rmse_def
+
+rmse_results_def = {}
+train_columns_def = numeric_cars.columns.drop('price')
+
+# For each column (minus 'price'), train a model, return RMSE value
+# and add to the dictionary 'rmse_results'.
+for column in train_columns_def:
+    rmse_val_def = knn_train_test_def(column, 'price', numeric_cars)
+    rmse_results_def[column] = rmse_val_def
+
+# Create a Series object from the dictionary so
+# we can easily view the results, sort, etc.
+rmse_results_series = pd.Series(rmse_results_def)
+rmse_results_series.sort_values() # for run with option -> 'Run current File in Interactive Window'
+
+
+# Hyperparameter optimization
+def knn_train_test_hpo(train_col, target_col, df):
     np.random.seed(1)
 
     # Randomize order of rows in Dataframe.
@@ -72,10 +116,10 @@ def knn_train_test(train_col, target_col, df):
         predicted_labels = knn.predict(test_df[[train_col]])
 
         # Calculate and return RMSE.
-        mse = MSE(test_df[target_col], predicted_labels)
-        rmse = np.sqrt(mse)
+        mse_hpo = MSE(test_df[target_col], predicted_labels)
+        rmse_hpo = np.sqrt(mse_hpo)
 
-        k_rmses[k] = rmse
+        k_rmses[k] = rmse_hpo
 
     return k_rmses
 
@@ -83,15 +127,15 @@ k_rmse_results = {}
 
 # For each column (minus 'price'), train a model, return RMSE value
 # and add to the dictionary 'rmse_results'.
-train_columns = numeric_cars.columns.drop('price')
+train_columns_hpo = numeric_cars.columns.drop('price')
 
-for column in train_columns:
-    rmse_val = knn_train_test(column, 'price', numeric_cars)
-    k_rmse_results[column] = rmse_val
+for column in train_columns_hpo:
+    rmse_val_hpo = knn_train_test_hpo(column, 'price', numeric_cars)
+    k_rmse_results[column] = rmse_val_hpo
 
 # for normal run
 print(f"RMSE results by hyperparameter k: {k_rmse_results}")
 
 # for run with option -> 'Run current File in Interactive Window'
-# (sample code is acctually for Jupyter .ipynb)
+# (sample code is actually for Jupyter .ipynb)
 k_rmse_results
