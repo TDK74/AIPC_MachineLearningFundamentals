@@ -153,3 +153,17 @@ for k, v in k_rmse_results.items():
     plt.plot(x, y)
     plt.xlabel('k value')
     plt.ylabel('RMSE')
+
+# Multivariate Model
+# Compute average RMSE across different 'k' values for each feature.
+feature_avg_rmse = {}
+
+for k, v in k_rmse_results.items():
+    avg_rmse = np.mean(list(v.values()))
+    feature_avg_rmse[k] = avg_rmse
+
+series_avg_rmse = pd.Series(feature_avg_rmse)
+sorted_series_avg_rmse = series_avg_rmse.sort_values()
+print(f"Sorted series average RMSE:\n{sorted_series_avg_rmse}")
+
+sorted_features = sorted_series_avg_rmse.index
