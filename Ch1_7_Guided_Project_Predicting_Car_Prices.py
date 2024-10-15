@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsRegressor as KNR
 from sklearn.metrics import mean_squared_error as MSE
 
@@ -38,7 +39,7 @@ numeric_cars.isnull().sum()
 numeric_cars = numeric_cars.fillna(numeric_cars.mean())
 # Confirm that there are no more missing values.
 numeric_cars.isnull().sum()
-# Normalize all columnns to range from 0 to 1 except the target column.
+# Normalize all columns to range from 0 to 1 except the target column.
 price_column = numeric_cars['price']
 numeric_cars = (numeric_cars - numeric_cars.min()) / (numeric_cars.max() - numeric_cars.min())
 numeric_cars['price'] = price_column
@@ -139,3 +140,16 @@ print(f"RMSE results by hyperparameter k: {k_rmse_results}")
 # for run with option -> 'Run current File in Interactive Window'
 # (sample code is actually for Jupyter .ipynb)
 k_rmse_results
+
+# sample code is actually for Jupyter .ipynb
+# %matplotlib inline
+
+# Matplotlib for visualization
+# for run with option -> 'Run current File in Interactive Window'
+for k, v in k_rmse_results.items():
+    x = list(v.keys())
+    y = list(v.values())
+
+    plt.plot(x, y)
+    plt.xlabel('k value')
+    plt.ylabel('RMSE')
