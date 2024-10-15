@@ -167,3 +167,49 @@ sorted_series_avg_rmse = series_avg_rmse.sort_values()
 print(f"Sorted series average RMSE:\n{sorted_series_avg_rmse}")
 
 sorted_features = sorted_series_avg_rmse.index
+
+def knn_train_test_mvm(train_cols, target_col, df):
+    np.random.seed(1)
+
+    # Randomize order of rows in DataFrame.
+    shuffled_index = np.random.permutation(df.index)
+    rand_df = df.reindex(shuffled_index)
+
+    # Divide number of rows in half and round.
+    last_train_row = int(len(rand_df) / 2)
+
+    # Select the first half, and set as training set.
+    # Select the second half, and set as test set.
+    train_df = rand_df.iloc[0 : last_train_row]
+    test_df = rand_df.iloc[last_train_row : ]
+
+    k_values = [5]
+    k_rmses = {}
+
+    for k in k_values:
+        # Fit model using k nearest neighbors.
+        knn = KNR(n_neighbors=k)
+        knn.fit(train_df[train_cols], train_df[target_col])
+
+        # Make predictions using model.
+        predicted_labels = knn.predict(test_df[train_cols])
+
+        # Calculate and return RMSE.
+        mse_mvm = MSE(test_df[target_col], predicted_labels)
+        rmse_mvm = np.sqrt(mse_mvm)
+
+        k_rmses[k] = rmse_mvm
+
+    return k_rmses
+
+k_rmse_results_mvm = {}
+
+for nr_best_feats in range(2, 7):
+    k_rmse_results_mvm['{} best features'.format(nr_best_feats)] = knn_train_test_mvm(
+        sorted_features[ : nr_best_feats], 'price', numeric_cars)
+
+# for normal run
+print(f"RMSE results by best features of Mulivariate model:\n{k_rmse_results_mvm}")
+
+# for run with option -> 'Run current File in Interactive Window'
+k_rmse_results_mvm
