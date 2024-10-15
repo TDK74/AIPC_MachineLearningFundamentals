@@ -146,6 +146,8 @@ k_rmse_results
 
 # Matplotlib for visualization
 # for run with option -> 'Run current File in Interactive Window'
+plt.figure() # for separation of diagrams
+
 for k, v in k_rmse_results.items():
     x = list(v.keys())
     y = list(v.values())
@@ -260,3 +262,16 @@ print(f"RMSE results from Hyperparameter Tuning of Mulivariate model:\n{k_rmse_r
 
 # for run with option -> 'Run current File in Interactive Window'
 k_rmse_results_hpt
+
+# Matplotlib for visualization
+# for run with option -> 'Run current File in Interactive Window'
+plt.figure() # for separation of diagrams
+
+for k, v in k_rmse_results_hpt.items():
+    x = list(v.keys())
+    y = list(v.values())
+    plt.plot(x, y, label="{}".format(k))
+
+plt.xlabel('k value')
+plt.ylabel('RMSE')
+plt.legend()
