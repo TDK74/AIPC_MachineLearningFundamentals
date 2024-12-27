@@ -27,3 +27,6 @@ x_test = st_x.transform(x_test)
 # fitting Decision Tree Classifier to the training set
 classifier = DcsTCls(criterion='entropy', random_state=0)
 classifier.fit(x_train, y_train)
+
+# predicting the test set result
+y_pred = classifier.predict(x_test)
