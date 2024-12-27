@@ -47,12 +47,29 @@ plt.xlim(x1.min(), x1.max())
 plt.ylim(x2.min(), x2.max())
 
 for i, j in enumerate(np.unique(y_set)):
-    plt.scatter(x_set[y_set == j, 0], x_set[y_set == j, 1], c=LstClm(('purple', 'green'))(i), label=j)
+    plt.scatter(x_set[y_set == j, 0], x_set[y_set == j, 1], c = LstClm(('purple', 'green'))(i), label=j)
 
-plt.title('Decision Tree Classification (Training set)')
+plt.title('Decision Tree Algorithm (Training set)')
 plt.xlabel('Age')
 plt.ylabel('Estimated Salary')
 plt.legend()
 plt.show()
 
+# visualizing the test set result
+x_ser, y_ser = x_test, y_test
+x1s, x2s = np.meshgrid(np.arange(start=x_ser[:, 0].min() - 1, stop=x_ser[:, 0].max() + 1, step=0.01),
+                            np.arange(start=x_ser[:, 1].min() - 1, stop=x_ser[:, 1].max() + 1, step=0.01))
 
+plt.contourf(x1s, x2s, classifier.predict(np.array([x1s.ravel(), x2s.ravel()]).T).reshape(x1s.shape),
+             alpha=0.75, cmap=LstClm(('purple', 'green')))
+plt.xlim(x1s.min(), x1s.max())
+plt.ylim(x2s.min(), x2s.max())
+
+for i, j in enumerate(np.unique(y_ser)):
+    plt.scatter(x_ser[y_ser == j, 0], x_ser[y_ser == j, 1], c = LstClm(('purple', 'green'))(i), label=j)
+
+plt.title('Decision Tree Algorithm (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
