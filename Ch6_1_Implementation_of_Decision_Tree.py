@@ -4,6 +4,7 @@ import matplotlib.pyplot as mtp
 from sklearn.model_selection import train_test_split as tts
 from sklearn.preprocessing import StandardScaler as StScl
 from sklearn.tree import DecisionTreeClassifier as DcsTCls
+from sklearn.metrics import confusion_matrix as c_mtx
 
 
 # importing dataset
@@ -30,3 +31,6 @@ classifier.fit(x_train, y_train)
 
 # predicting the test set result
 y_pred = classifier.predict(x_test)
+
+# creation of Confusion matrix
+cm = c_mtx(y_test, y_pred)
